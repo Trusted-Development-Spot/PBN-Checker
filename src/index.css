@@ -32,17 +32,77 @@
   background: rgba(100, 116, 139, 0.6);
 }
 
-/* Ad Unit containers with CLS protection */
-.ad-slot-leaderboard {
-  min-height: 90px;
-  max-width: 970px;
+/* Live Animated Ad Unit Styling */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
 }
 
-.ad-slot-rectangle {
-  min-height: 250px;
-  max-width: 336px;
+@keyframes beacon-ping {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
 }
 
-.ad-slot-infeed {
-  min-height: 120px;
+@keyframes gradient-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.live-beacon {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: #ef4444;
+  animation: beacon-ping 1.8s infinite;
+}
+
+.ad-card-glow {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.08), rgba(99, 102, 241, 0.08));
+  background-size: 200% 200%;
+  animation: gradient-border 6s ease infinite;
+}
+
+.ad-slide-fade {
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ad-slide-hidden {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(6px);
+}
+
+.ad-slide-visible {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+  transform: translateY(0);
 }

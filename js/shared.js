@@ -1,6 +1,6 @@
 /**
  * PBN Skye — Shared Vanilla JS Utility
- * Handles Dark/Light Mode, Mobile Navigation, and Shared Components
+ * Handles Dark/Light Mode, Mobile Navigation, Active Nav, and Live Animated Ad Rotators
  */
 
 (function () {
@@ -123,12 +123,135 @@
     });
   }
 
+  // 5. Live Running Animated Ad Units Controller
+  function initAnimatedAds() {
+    const rotators = document.querySelectorAll('.animated-ad-rotator');
+    rotators.forEach((rotator) => {
+      const slides = rotator.querySelectorAll('.ad-slide');
+      const dots = rotator.querySelectorAll('[data-ad-dot]');
+      const prevBtn = rotator.querySelector('[data-ad-prev]');
+      const nextBtn = rotator.querySelector('[data-ad-next]');
+      const timerBar = rotator.querySelector('.ad-timer-progress');
+      if (slides.length <= 1) return;
+
+      let currentIndex = 0;
+      let intervalId = null;
+      let isPaused = false;
+      const DURATION = 6000; // 6 seconds per slide
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          if (i === index) {
+            slide.classList.remove('ad-slide-hidden');
+            slide.classList.add('ad-slide-visible');
+          } else {
+            slide.classList.add('ad-slide-hidden');
+            slide.classList.remove('ad-slide-visible');
+          }
+        });
+
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.className = 'w-6 h-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400 transition-all duration-300';
+          } else {
+            dot.className = 'w-2 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 transition-all duration-300';
+          }
+        });
+
+        currentIndex = index;
+        resetTimerBar();
+      }
+
+      function resetTimerBar() {
+        if (!timerBar) return;
+        timerBar.style.transition = 'none';
+        timerBar.style.width = '0%';
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            if (!isPaused) {
+              timerBar.style.transition = `width ${DURATION}ms linear`;
+              timerBar.style.width = '100%';
+            }
+          }, 30);
+        });
+      }
+
+      function nextSlide() {
+        const nextIndex = (currentIndex + 1) % slides.length;
+        showSlide(nextIndex);
+      }
+
+      function prevSlide() {
+        const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+        showSlide(prevIndex);
+      }
+
+      function startTimer() {
+        if (intervalId) clearInterval(intervalId);
+        resetTimerBar();
+        intervalId = setInterval(() => {
+          if (!isPaused) {
+            nextSlide();
+          }
+        }, DURATION);
+      }
+
+      // Attach click events on dots/indicators
+      dots.forEach((dot) => {
+        dot.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetIndex = parseInt(dot.getAttribute('data-ad-dot'), 10);
+          if (!isNaN(targetIndex)) {
+            showSlide(targetIndex);
+            startTimer();
+          }
+        });
+      });
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          prevSlide();
+          startTimer();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          nextSlide();
+          startTimer();
+        });
+      }
+
+      // Pause timer on hover so users can easily inspect and click
+      rotator.addEventListener('mouseenter', () => {
+        isPaused = true;
+        if (timerBar) {
+          const computedStyle = window.getComputedStyle(timerBar);
+          timerBar.style.width = computedStyle.width;
+          timerBar.style.transition = 'none';
+        }
+      });
+
+      rotator.addEventListener('mouseleave', () => {
+        isPaused = false;
+        startTimer();
+      });
+
+      // Initialize
+      showSlide(0);
+      startTimer();
+    });
+  }
+
   // Bind Events on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initMobileMenu();
     highlightActiveNav();
     initFaqAccordion();
+    initAnimatedAds();
 
     // Attach theme toggle listeners
     document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
