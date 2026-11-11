@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBN Skye — PBN Footprint & Domain Neighborhood Checker</title>
+  <meta name="description" content="Free technical SEO tool to audit domain network footprints, C-Class IP subnets, nameserver conflicts, and hosting isolation for private blog networks and expired domains.">
+  <link rel="canonical" href="https://pbnskye.com/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pbnskye.com/">
+  <meta property="og:title" content="PBN Skye — PBN Footprint & Domain Neighborhood Checker">
+  <meta property="og:description" content="Audit domain hosting diversity, C-Class IP subnets, shared nameservers, and analytics footprint leakages with 100% client-side privacy.">
+  <meta property="og:site_name" content="PBN Skye">
+
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PBN Skye — PBN Footprint & Domain Neighborhood Checker">
+  <meta name="twitter:description" content="Audit domain hosting diversity, C-Class IP subnets, shared nameservers, and analytics footprint leakages.">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN with configured dark mode and typography -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+              950: '#1e1b4b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Local styles / Vite fallback -->
+  <link rel="stylesheet" href="/src/index.css">
+
+  <!-- Schema.org WebApplication & FAQPage JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "PBN Skye",
+        "url": "https://pbnskye.com/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All",
+        "description": "Client-side PBN footprint and domain neighborhood audit tool for SEO professionals, webmasters, and agencies.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a PBN footprint in SEO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A PBN footprint is any identifiable technical pattern that connects multiple websites together, revealing that they share a common owner or network. Common footprints include identical IP addresses, shared C-Class subnets, duplicate nameservers, common Google Analytics or AdSense IDs, and identical CMS themes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why is C-Class IP subnet diversity critical?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "When websites share the first three octets of an IPv4 address (e.g. 192.168.1.X), they are hosted on the same physical data center rack or small hosting cluster. Search engines detect this clustering as an unnatural link relationship."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Cloudflare completely hide a PBN footprint?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "While Cloudflare masks original server origin IPs, relying solely on Cloudflare across a large private network introduces other footprints, such as default SSL certificate authorities, common nameserver pairs, and shared CDN header fingerprints."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased transition-colors duration-200">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
+      
+      <!-- Zone 1: Wordmark Brand -->
+      <a href="index.html" class="flex items-center gap-2.5 whitespace-nowrap shrink-0 group">
+        <div class="w-9 h-9 rounded-lg bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg shadow-sm group-hover:bg-indigo-700 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <span class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">PBN Skye</span>
+      </a>
+
+      <!-- Zone 2: Navigation Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a href="index.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap">Audit Tool</a>
+        <a href="guides.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap">SEO Guides</a>
+        <a href="about.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap">About Us</a>
+        <a href="contact.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap">Contact</a>
+      </nav>
+
+      <!-- Zone 3: Actions (Theme Toggle & CTA) -->
+      <div class="flex items-center gap-3 shrink-0">
+        <!-- Theme Toggle Button -->
+        <button type="button" data-theme-toggle class="p-2 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-100 dark:bg-slate-800 transition-colors" aria-label="Toggle dark mode">
+          <!-- Sun Icon (shown in dark mode) -->
+          <svg class="theme-icon-sun w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Moon Icon (shown in light mode) -->
+          <svg class="theme-icon-moon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <a href="#audit-section" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg transition-colors whitespace-nowrap shadow-sm">
+          Run Network Audit
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-expanded="false" aria-label="Open mobile menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-5 space-y-2">
+      <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Audit Tool</a>
+      <a href="guides.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">SEO Guides</a>
+      <a href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About Us</a>
+      <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Support</a>
+      <div class="pt-2">
+        <a href="#audit-section" class="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg">Launch Checker</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= TOP LEADERBOARD AD UNIT PLACEHOLDER ================= -->
+  <aside class="w-full max-w-5xl mx-auto px-4 mt-6" aria-label="Sponsored Advertisement">
+    <!-- AdSense Ad Unit -->
+    <div class="ad-slot-leaderboard w-full border border-dashed border-slate-300 dark:border-slate-800 bg-slate-100/60 dark:bg-slate-900/50 rounded-lg flex flex-col items-center justify-center p-3 text-center transition-colors">
+      <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Advertisement</span>
+      <p class="text-xs text-slate-500 dark:text-slate-400">Google AdSense Responsive Leaderboard Unit (728x90 / 970x90)</p>
+    </div>
+  </aside>
+
+  <!-- ================= HERO & TOOL CONTAINER ================= -->
+  <main class="flex-grow">
+    
+    <!-- Hero Header -->
+    <section class="max-w-5xl mx-auto px-4 pt-10 pb-6 text-center">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-3">
+        <span>Technical SEO Diagnostic Suite</span>
+        <span aria-hidden="true">·</span>
+        <span>100% Client-Side Privacy</span>
+        <span aria-hidden="true">·</span>
+        <span>Real-Time DNS & HTML Audit</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-3xl mx-auto text-balance">
+        PBN Footprint & Domain Neighborhood Checker
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+        Cross-reference up to 15 domains for shared IP addresses, C-Class subnets, nameservers, CMS themes, and Google Analytics or AdSense tracking tags to prevent search engine de-indexing.
+      </p>
+    </section>
+
+    <!-- Main Tool Interface -->
+    <section id="audit-section" class="max-w-5xl mx-auto px-4 py-4">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm p-5 sm:p-7">
+        
+        <!-- Tool Input Form -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <label for="domains-input" class="text-sm font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <span>Target Domain Batch</span>
+              <span class="text-xs font-normal text-slate-500 dark:text-slate-400">(Enter up to 15 root domains, one per line)</span>
+            </label>
+            <span class="text-xs text-slate-400 font-mono">Max 15 domains</span>
+          </div>
+
+          <textarea
+            id="domains-input"
+            rows="5"
+            placeholder="example1.com&#10;example2.org&#10;example3.net"
+            class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm font-mono text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition-all"
+          ></textarea>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                id="load-sample-btn"
+                class="px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
+              >
+                Load Sample Batch
+              </button>
+              <button
+                type="button"
+                id="clear-btn"
+                class="px-3.5 py-2 text-xs font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-300 transition-colors"
+              >
+                Clear Input
+              </button>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button
+                type="button"
+                id="run-audit-btn"
+                class="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg transition-colors shadow-sm"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Audit Network</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Audit Progress Bar -->
+        <div id="audit-progress-container" class="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 hidden space-y-2">
+          <div class="flex items-center justify-between text-xs font-medium text-slate-600 dark:text-slate-300">
+            <span id="audit-progress-text">Starting audit pipeline...</span>
+            <span id="current-domain-status" class="text-slate-400 font-mono text-[11px] truncate max-w-xs">Initializing DNS queries...</span>
+          </div>
+          <div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+            <div id="audit-progress-bar" class="bg-indigo-600 dark:bg-indigo-500 h-full w-0 transition-all duration-300 rounded-full"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= AD SLOT: ABOVE RESULTS ================= -->
+    <aside class="w-full max-w-5xl mx-auto px-4 my-6" aria-label="Sponsored Advertisement">
+      <!-- AdSense Ad Unit -->
+      <div class="ad-slot-infeed w-full border border-dashed border-slate-300 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/40 rounded-lg flex flex-col items-center justify-center p-3 text-center transition-colors">
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Advertisement</span>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Google AdSense In-Feed Native Unit / High-Visibility Responsive Ad</p>
+      </div>
+    </aside>
+
+    <!-- ================= RESULTS & CONFLICT SCORECARD ================= -->
+    <section class="max-w-5xl mx-auto px-4 py-2">
+      
+      <!-- Empty State -->
+      <div id="empty-state" class="text-center py-12 px-4 border border-dashed border-slate-300 dark:border-slate-800 rounded-xl bg-white/60 dark:bg-slate-900/40">
+        <div class="w-12 h-12 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center mb-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">No Domains Audited Yet</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
+          Paste a list of domains above or click "Load Sample Batch" to perform a real-time DNS, hosting ASN, and footprint conflict audit.
+        </p>
+      </div>
+
+      <!-- Network Isolation Score Card -->
+      <div id="score-card" class="hidden mb-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          
+          <!-- Column 1: Score Gauge -->
+          <div class="space-y-2 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 pb-4 md:pb-0 md:pr-6">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Network Isolation Score</span>
+            <div class="flex items-baseline gap-3">
+              <span id="score-value" class="text-4xl font-extrabold tabular-nums text-emerald-600 dark:text-emerald-400">100%</span>
+              <span class="text-xs text-slate-400 font-mono">0-100% Scale</span>
+            </div>
+            <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div id="score-bar" class="h-full bg-emerald-500 rounded-full w-full"></div>
+            </div>
+            <p id="score-verdict" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">Optimal Isolation</p>
+          </div>
+
+          <!-- Column 2: Conflict Diagnostics -->
+          <div class="space-y-1.5 md:col-span-2">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Footprint Deductions & Findings</span>
+            <ul id="score-breakdown" class="space-y-1 mt-1">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Quick Metrics Bar -->
+        <div class="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Audited Domains</div>
+            <div id="stat-total-domains" class="text-xl font-bold font-mono text-slate-900 dark:text-white tabular-nums">0</div>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Unique IPs</div>
+            <div id="stat-unique-ips" class="text-xl font-bold font-mono text-slate-900 dark:text-white tabular-nums">0</div>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Unique C-Classes</div>
+            <div id="stat-unique-cclasses" class="text-xl font-bold font-mono text-slate-900 dark:text-white tabular-nums">0</div>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Conflicted Domains</div>
+            <div id="stat-conflicts-detected" class="text-xl font-bold font-mono text-rose-600 dark:text-rose-400 tabular-nums">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Table Container -->
+      <div id="results-container" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+        
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white">Domain Neighborhood & Footprint Matrix</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Live DNS records, hosting ASNs, and detected footprint collisions</p>
+          </div>
+          <button
+            type="button"
+            id="export-csv-btn"
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Export CSV Report</span>
+          </button>
+        </div>
+
+        <!-- Responsive Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                <th class="py-3 px-4">Domain</th>
+                <th class="py-3 px-4">IPv4 Address</th>
+                <th class="py-3 px-4">C-Class (/24)</th>
+                <th class="py-3 px-4">Nameservers</th>
+                <th class="py-3 px-4">Hosting / ASN</th>
+                <th class="py-3 px-4">Tracking IDs</th>
+                <th class="py-3 px-4">CMS Theme</th>
+                <th class="py-3 px-4 text-right">Isolation Status</th>
+              </tr>
+            </thead>
+            <tbody id="results-table-body" class="divide-y divide-slate-200 dark:divide-slate-800 font-sans">
+              <!-- Dynamically populated by pbn-checker.js -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= AD SLOT: BELOW RESULTS ================= -->
+    <aside class="w-full max-w-5xl mx-auto px-4 my-8" aria-label="Sponsored Advertisement">
+      <!-- AdSense Ad Unit -->
+      <div class="ad-slot-leaderboard w-full border border-dashed border-slate-300 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/40 rounded-lg flex flex-col items-center justify-center p-3 text-center transition-colors">
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Advertisement</span>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Google AdSense Responsive Content Banner (728x90 / 970x250)</p>
+      </div>
+    </aside>
+
+    <!-- ================= COMPREHENSIVE 1,000+ WORD SEO GUIDE ================= -->
+    <article class="max-w-4xl mx-auto px-4 py-10 prose prose-slate dark:prose-invert">
+      <header class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
+        <div class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-2">Technical SEO Architecture Guide</div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+          The Anatomy of a PBN Footprint: How Search Engines Detect Private Blog Networks
+        </h2>
+        <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-2">
+          <span>By PBN Skye Research Team</span>
+          <span aria-hidden="true">·</span>
+          <span>Updated March 2026</span>
+          <span aria-hidden="true">·</span>
+          <span>12 min read</span>
+        </div>
+      </header>
+
+      <div class="space-y-6 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+        
+        <p>
+          Private Blog Networks (PBNs) and portfolio domains have evolved dramatically over the last two decades. In the early days of search engine optimization, webmasters could acquire expired high-authority domains, install default WordPress templates on a single shared cPanel hosting account, and cross-link them with aggressive exact-match anchor texts to manipulate PageRank. Today, modern algorithmic systems like Google’s SpamBrain and link graph clustering models utilize advanced multi-dimensional correlation matrices to spot unnatural networks in fractions of a second.
+        </p>
+
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3">
+          1. Understanding C-Class Subnets and Autonomous System (ASN) Diversity
+        </h3>
+        <p>
+          Every web server on the IPv4 internet is identified by a 32-bit numerical label represented in dot-decimal notation: <code>AAA.BBB.CCC.DDD</code>. These segments represent the A-Class, B-Class, C-Class, and D-Class (host octet) octets respectively.
+        </p>
+        <p>
+          A common misconception among intermediate SEOs is that simply putting domains on different IP addresses is sufficient. If Domain A is hosted at <code>198.51.100.14</code> and Domain B is hosted at <code>198.51.100.82</code>, they share the exact same <strong>C-Class subnet</strong> (<code>198.51.100.0/24</code>). Web hosting companies and data centers purchase contiguous blocks of IP addresses in /24 subnets. When multiple domains promoting the same target money site reside within the identical /24 block, the probability of random organic linkage approaches zero, immediately raising an algorithmic flag.
+        </p>
+        <p>
+          True infrastructure isolation requires diversifying across different <strong>Autonomous System Numbers (ASNs)</strong>. An ASN is a globally unique identifier assigned to a network routing operator (such as Amazon AWS AS16509, Cloudflare AS13335, DigitalOcean AS14061, or OVH AS16276). Hosting websites across distinct ASNs guarantees physical and organizational separation between data centers.
+        </p>
+
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3">
+          2. The DNS Trap: Nameservers, SOA Serials, and Reverse IP Neighbors
+        </h3>
+        <p>
+          Domain Name System (DNS) records are public blueprints of your technical stack. Search engine crawlers do not merely resolve an A record; they log NS records, MX mail exchanges, TXT verification strings, and the Start of Authority (SOA) record.
+        </p>
+        <ul class="list-disc pl-5 space-y-2">
+          <li><strong>Shared Default Nameservers:</strong> Using custom vanity nameservers like <code>ns1.mybranddns.com</code> across 20 distinct websites instantly links them to a single controller.</li>
+          <li><strong>SOA Email Contact:</strong> The SOA record contains the administrator’s email address (with the <code>@</code> replaced by a dot). If you use default cPanel setups, your personal or server administrative email is broadcast publicly to all DNS crawlers.</li>
+          <li><strong>Zone File Serial Numbers:</strong> Automated domain provisioning scripts often generate identical timestamps or sequential serial numbers across DNS zone files created within seconds of each other.</li>
+        </ul>
+
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3">
+          3. Analytics, Tracking Tags, and AdSense Leaks
+        </h3>
+        <p>
+          The most catastrophic footprint in network management is the reuse of client-side tracking scripts. Search engine crawlers parse raw HTML source code and extract all tracking identifiers:
+        </p>
+        <div class="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4 font-mono text-xs text-slate-800 dark:text-slate-200">
+          Google Analytics 4: G-XXXXXXXXXX<br>
+          Google Tag Manager: GTM-XXXXXXX<br>
+          Google AdSense Publisher ID: ca-pub-XXXXXXXXXXXXXXXX<br>
+          Meta Pixel ID: 123456789012345
+        </div>
+        <p>
+          Because Google owns both Google Analytics and Google AdSense, tying two otherwise isolated domains to the same Publisher ID or GA property creates an undeniable, mathematically verifiable link between the entities. Even if your domains reside on 15 different continents, a single shared tracking code completely destroys your network isolation.
+        </p>
+
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3">
+          4. CMS Signatures, Asset Fingerprints, and Plugin Footprints
+        </h3>
+        <p>
+          Beyond networking layers, application-layer footprints frequently trip algorithmic spam detection:
+        </p>
+        <ul class="list-disc pl-5 space-y-2">
+          <li><strong>Identical WordPress Themes:</strong> Installing the exact same niche theme, especially with identical customized child-theme directory paths (e.g., <code>/wp-content/themes/custom-agency-v1/</code>).</li>
+          <li><strong>Identical Plugin Footprints:</strong> HTML comment tags emitted by popular caching, SEO, or security plugins (e.g., <code>&lt;!-- W3 Total Cache --&gt;</code> or <code>&lt;!-- Yoast SEO --&gt;</code>) revealing matching plugin version combinations and configuration options.</li>
+          <li><strong>Default Media Timestamps:</strong> Bulk-publishing content exported and imported with matching image directory formats (e.g. <code>/uploads/2026/03/</code>) across multiple sites on the same day.</li>
+        </ul>
+
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3">
+          5. Best Practices for Domain Portfolio Management
+        </h3>
+        <p>
+          To maintain a resilient, penalty-free domain portfolio or multi-site digital agency architecture:
+        </p>
+        <ol class="list-decimal pl-5 space-y-2">
+          <li><strong>Always Use Unique Registrars and Privacy:</strong> Enable ICANN-compliant WHOIS privacy at checkout, and stagger domain registrations across multiple reputable registrars (Namecheap, Porkbun, Dynadot, Cloudflare).</li>
+          <li><strong>Diversify Hosting Providers:</strong> Distribute sites across reliable cloud providers (DigitalOcean, Vultr, Linode, AWS Lightsail, Hetzner) rather than cheap "SEO Hosting" providers that pack hundreds of spam sites onto predictable C-Class ranges.</li>
+          <li><strong>Never Share Analytics or Monetization IDs:</strong> If a site is intended as a separate brand entity, it must never share tracking codes or publisher accounts with your primary properties.</li>
+          <li><strong>Regularly Audit Your Network:</strong> Use PBN Skye periodically to verify that changes in hosting IPs, DNS migrations, or proxy routing haven't accidentally clustered your domains onto shared subnets.</li>
+        </ol>
+
+      </div>
+    </article>
+
+    <!-- ================= FAQ ACCORDION SECTION ================= -->
+    <section class="max-w-4xl mx-auto px-4 py-8 mb-12">
+      <div class="border-t border-slate-200 dark:border-slate-800 pt-8">
+        <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-6">
+          Frequently Asked Questions
+        </h3>
+
+        <div class="space-y-3">
+          
+          <!-- FAQ 1 -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 overflow-hidden">
+            <button
+              type="button"
+              class="w-full px-5 py-4 text-left font-semibold text-sm sm:text-base text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              data-faq-toggle="faq-1"
+              aria-expanded="false"
+            >
+              <span>What is a domain neighborhood and why does it affect my SEO?</span>
+              <svg data-faq-icon class="w-5 h-5 text-slate-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq-1" class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
+              A domain neighborhood refers to the cluster of websites that share the same IP address or C-Class subnet. If your server neighbors are high-volume spam sites, phishing operations, or malicious link farms, search engines and email security filters may apply localized IP reputation penalties or deliver stricter algorithmic scrutiny to all domains residing on that subnet.
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 overflow-hidden">
+            <button
+              type="button"
+              class="w-full px-5 py-4 text-left font-semibold text-sm sm:text-base text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              data-faq-toggle="faq-2"
+              aria-expanded="false"
+            >
+              <span>Does Cloudflare reverse proxy eliminate all hosting footprints?</span>
+              <svg data-faq-icon class="w-5 h-5 text-slate-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq-2" class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
+              Cloudflare hides the underlying origin server IP address behind its Anycast network, which provides substantial protection. However, using Cloudflare alone does not hide WHOIS registrations, Google Analytics tags, custom theme files, or backlink velocity. Furthermore, if you use the same Cloudflare account, default SSL certificates and nameserver pairs can sometimes correlate your sites.
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 overflow-hidden">
+            <button
+              type="button"
+              class="w-full px-5 py-4 text-left font-semibold text-sm sm:text-base text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              data-faq-toggle="faq-3"
+              aria-expanded="false"
+            >
+              <span>Is my domain audit data saved on PBN Skye servers?</span>
+              <svg data-faq-icon class="w-5 h-5 text-slate-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq-3" class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
+              No. PBN Skye is built entirely with client-side JavaScript. All DNS lookups are performed directly from your browser via public DNS-over-HTTPS (Google & Cloudflare), and HTML scans use open CORS proxies. We do not operate a backend database, and your audited domains are never stored, logged, or shared with third parties.
+            </div>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 overflow-hidden">
+            <button
+              type="button"
+              class="w-full px-5 py-4 text-left font-semibold text-sm sm:text-base text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              data-faq-toggle="faq-4"
+              aria-expanded="false"
+            >
+              <span>What should I do if PBN Skye detects an exact IP or C-Class conflict?</span>
+              <svg data-faq-icon class="w-5 h-5 text-slate-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq-4" class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
+              If two websites intended to pass authority or operate as separate brand entities share an exact IP or C-Class subnet, migrate one of the sites to a different hosting provider or cloud VPS (e.g. migrate from DigitalOcean to Hetzner or Linode). Ensure that nameservers are also updated to the new host to break the DNS association.
+            </div>
+          </div>
+
+          <!-- FAQ 5 -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 overflow-hidden">
+            <button
+              type="button"
+              class="w-full px-5 py-4 text-left font-semibold text-sm sm:text-base text-slate-900 dark:text-white flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              data-faq-toggle="faq-5"
+              aria-expanded="false"
+            >
+              <span>Can I use PBN Skye to audit competitor backlinks?</span>
+              <svg data-faq-icon class="w-5 h-5 text-slate-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq-5" class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
+              Yes. If you are conducting competitive backlink research and suspect a competitor is ranking via a private network, paste their top referring domains into PBN Skye. If multiple referring domains resolve to identical IPs, C-Classes, or share Google Analytics IDs, you have uncovered their underlying link network.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        
+        <!-- Column 1: Brand & Mission -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <span class="text-base font-bold text-slate-900 dark:text-white">PBN Skye</span>
+          </div>
+          <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-xs">
+            Open-source technical SEO diagnostic tool designed to audit domain hosting isolation, C-Class IP diversity, DNS nameserver collisions, and tracking footprint leakages.
+          </p>
+          <div class="text-[11px] text-slate-400">
+            Domain: <a href="https://pbnskye.com" class="text-indigo-600 dark:text-indigo-400 hover:underline">pbnskye.com</a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">Tools & Guides</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="index.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Domain Footprint Checker</a></li>
+            <li><a href="guides.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">SEO & Link Building Guides</a></li>
+            <li><a href="guides.html#article-expired-domains" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Auditing Expired Domains</a></li>
+            <li><a href="guides.html#article-c-class" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">C-Class IP & ASN Diversity</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Corporate & Support -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">Organization</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="about.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">About PBN Skye</a></li>
+            <li><a href="contact.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact Support</a></li>
+            <li><a href="contact.html#advertising" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Advertising Inquiries</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Legal & Policy Compliance -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">Legal & Compliance</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="privacy-policy.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="cookie-policy.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Cookie Policy</a></li>
+            <li><a href="disclaimer.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Disclaimer</a></li>
+            <li><a href="terms.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 dark:text-slate-500 text-xs">
+        <p>© 2026 PBN Skye (pbnskye.com). All rights reserved.</p>
+        <p class="text-[11px]">Free, privacy-first client-side web utility. Not affiliated with Google LLC.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/shared.js"></script>
+  <script src="/js/pbn-checker.js"></script>
+</body>
+</html>

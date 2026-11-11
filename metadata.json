@@ -1,0 +1,6 @@
+{
+  "name": "PBN Skye - PBN Footprint & Domain Neighborhood Checker",
+  "description": "Audit domain network footprints, C-Class IP subnets, nameserver conflicts, and hosting isolation for private blog networks and expired domains.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

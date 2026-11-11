@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie Policy — PBN Skye (pbnskye.com)</title>
+  <meta name="description" content="Cookie Policy for PBN Skye (pbnskye.com). Learn how we use cookies, advertising cookies (Google AdSense), and how to manage your browser preferences.">
+  <link rel="canonical" href="https://pbnskye.com/cookie-policy.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pbnskye.com/cookie-policy.html">
+  <meta property="og:title" content="Cookie Policy — PBN Skye">
+  <meta property="og:description" content="Detailed information on cookie usage, third-party advertising, and browser management for pbnskye.com.">
+  <meta property="og:site_name" content="PBN Skye">
+
+  <!-- Fonts & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/src/index.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased transition-colors duration-200">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
+      <a href="index.html" class="flex items-center gap-2.5 whitespace-nowrap shrink-0 group">
+        <div class="w-9 h-9 rounded-lg bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <span class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">PBN Skye</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a href="index.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap">Audit Tool</a>
+        <a href="guides.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap">SEO Guides</a>
+        <a href="about.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap">About Us</a>
+        <a href="contact.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3 shrink-0">
+        <button type="button" data-theme-toggle class="p-2 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-100 dark:bg-slate-800 transition-colors" aria-label="Toggle dark mode">
+          <svg class="theme-icon-sun w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg class="theme-icon-moon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <a href="index.html" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors whitespace-nowrap shadow-sm">
+          Run Network Audit
+        </a>
+
+        <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-expanded="false" aria-label="Open mobile menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-5 space-y-2">
+      <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Audit Tool</a>
+      <a href="guides.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">SEO Guides</a>
+      <a href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About Us</a>
+      <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Support</a>
+    </div>
+  </header>
+
+  <!-- Top Ad Unit -->
+  <aside class="w-full max-w-5xl mx-auto px-4 mt-6" aria-label="Sponsored Advertisement">
+    <!-- AdSense Ad Unit -->
+    <div class="ad-slot-leaderboard w-full border border-dashed border-slate-300 dark:border-slate-800 bg-slate-100/60 dark:bg-slate-900/50 rounded-lg flex flex-col items-center justify-center p-3 text-center transition-colors">
+      <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Advertisement</span>
+      <p class="text-xs text-slate-500 dark:text-slate-400">Google AdSense Responsive Leaderboard Unit (728x90 / 970x90)</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-4xl mx-auto px-4 py-12">
+    
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 sm:p-10 shadow-sm">
+      
+      <header class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+          Cookie Policy
+        </h1>
+        <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-2">
+          <span>Website: pbnskye.com</span>
+          <span aria-hidden="true">·</span>
+          <span>Effective: March 2026</span>
+          <span aria-hidden="true">·</span>
+          <span>Transparency & Ad Standards</span>
+        </div>
+      </header>
+
+      <div class="space-y-6 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300">
+        
+        <p>
+          This is the Cookie Policy for <strong>PBN Skye</strong>, accessible from <strong>https://pbnskye.com</strong>. We believe in complete transparency regarding how and why cookies and local browser storage are utilized when you access our technical tools and educational articles.
+        </p>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">
+          1. What Are Cookies?
+        </h2>
+        <p>
+          As is common practice with almost all professional websites, this site uses cookies, which are tiny files that are downloaded to your computer or mobile device, to improve your experience. This page describes what information they gather, how we use it, and why we sometimes need to store these cookies. We will also share how you can prevent these cookies from being stored, however this may downgrade or break certain elements of the site's functionality.
+        </p>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">
+          2. The Cookies We Set
+        </h2>
+        <ul class="list-disc pl-5 space-y-3">
+          <li>
+            <strong>Preferences & Interface State:</strong> In order to provide you with an optimal browsing experience, we provide the functionality to set your preferences for how this site runs (such as our Light/Dark mode toggle). In order to remember your preferences across page visits, we store your choice in browser <code>localStorage</code> or session cookies so this information is recalled automatically.
+          </li>
+          <li>
+            <strong>Form Processing Cookies:</strong> When you submit data to through a form such as those found on our Contact page, cookies or anti-spam tokens may be set to remember your user details for future correspondence and to prevent automated bot submissions.
+          </li>
+        </ul>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">
+          3. Third-Party Advertising Cookies (Google AdSense)
+        </h2>
+        <p>
+          In some special cases, we also use cookies provided by trusted third parties. The following section details which third-party cookies you might encounter through this site:
+        </p>
+        <ul class="list-disc pl-5 space-y-3">
+          <li>
+            <strong>Google AdSense:</strong> We use Google AdSense to serve contextual and interest-based advertisements to help support our free tools. The Google DoubleClick DART cookie is used to serve more relevant ads across the web and limit the number of times that a given ad is shown to you.
+          </li>
+          <li>
+            For more information on Google AdSense, see the official Google AdSense privacy and terms FAQ at <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">https://policies.google.com/technologies/ads</a>.
+          </li>
+        </ul>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">
+          4. How to Disable and Manage Cookies
+        </h2>
+        <p>
+          You can prevent the setting of cookies by adjusting the settings on your browser (see your browser Help for how to do this). Be aware that disabling cookies will affect the functionality of this and many other websites that you visit. Disabling cookies will usually result in also disabling certain functionality and features of this site. Therefore, it is recommended that you do not disable cookies.
+        </p>
+
+        <h3 class="text-base font-bold text-slate-900 dark:text-white pt-2">
+          Browser-Specific Cookie Management:
+        </h3>
+        <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
+          <li><strong>Google Chrome:</strong> Settings &gt; Privacy and security &gt; Third-party cookies &gt; Block or customize cookie permissions.</li>
+          <li><strong>Mozilla Firefox:</strong> Settings &gt; Privacy &amp; Security &gt; Enhanced Tracking Protection &gt; Custom.</li>
+          <li><strong>Apple Safari:</strong> Preferences &gt; Privacy &gt; Manage Website Data &gt; Prevent cross-site tracking.</li>
+          <li><strong>Microsoft Edge:</strong> Settings &gt; Cookies and site permissions &gt; Manage and delete cookies and site data.</li>
+        </ul>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">
+          5. Opting Out of Targeted Advertising
+        </h2>
+        <p>
+          You may opt out of personalized advertising by visiting:
+        </p>
+        <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
+          <li><a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Google Ads Settings</a></li>
+          <li><a href="https://optout.aboutads.info" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Digital Advertising Alliance (DAA) Consumer Choice</a></li>
+          <li><a href="https://www.youronlinechoices.com" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Your Online Choices (Europe / EDAA)</a></li>
+        </ul>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">
+          6. More Information
+        </h2>
+        <p>
+          Hopefully that has clarified things for you. As was previously mentioned, if there is something that you aren't sure whether you need or not, it's usually safer to leave cookies enabled in case it does interact with one of the features you use on our site.
+        </p>
+        <p>
+          If you are still looking for more information, you can contact us through our email at <code>support@pbnskye.com</code> or visit our <a href="contact.html" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Contact page</a>.
+        </p>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <span class="text-base font-bold text-slate-900 dark:text-white">PBN Skye</span>
+          </div>
+          <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-xs">
+            Open-source technical SEO diagnostic tool designed to audit domain hosting isolation, C-Class IP diversity, DNS nameserver collisions, and tracking footprint leakages.
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">Tools & Guides</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="index.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Domain Footprint Checker</a></li>
+            <li><a href="guides.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">SEO & Link Building Guides</a></li>
+            <li><a href="guides.html#article-expired-domains" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Auditing Expired Domains</a></li>
+            <li><a href="guides.html#article-c-class" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">C-Class IP & ASN Diversity</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">Organization</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="about.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">About PBN Skye</a></li>
+            <li><a href="contact.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact Support</a></li>
+            <li><a href="contact.html#advertising" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Advertising Inquiries</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">Legal & Compliance</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="privacy-policy.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="cookie-policy.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-semibold text-indigo-600 dark:text-indigo-400">Cookie Policy</a></li>
+            <li><a href="disclaimer.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Disclaimer</a></li>
+            <li><a href="terms.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 dark:text-slate-500 text-xs">
+        <p>© 2026 PBN Skye (pbnskye.com). All rights reserved.</p>
+        <p class="text-[11px]">Free, privacy-first client-side web utility. Not affiliated with Google LLC.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/shared.js"></script>
+</body>
+</html>
